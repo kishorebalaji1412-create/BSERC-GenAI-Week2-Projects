@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f5f8">
+  <title>Resume Studio — Offline Resume Builder</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="#" aria-label="Resume Studio home"><span class="brand-icon">R</span><span>resume<span class="brand-muted">studio</span></span></a>
+    <div class="header-actions">
+      <span class="local-status"><i></i> Saved on this device</span>
+      <button id="importButton" class="button button-quiet" type="button">Import JSON</button>
+      <button id="exportJsonButton" class="button button-quiet" type="button">Export JSON</button>
+      <input id="importFile" type="file" accept=".json,application/json" hidden>
+      <button id="printButton" class="button button-primary" type="button"><span aria-hidden="true">↗</span> Export PDF</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="editor-column" aria-labelledby="editorTitle">
+      <div class="column-heading">
+        <div><p class="eyebrow">YOUR CAREER STORY</p><h1 id="editorTitle">Build your resume</h1></div>
+        <button id="resetButton" class="text-button" type="button">Clear all</button>
+      </div>
+      <p class="intro-copy">Add your details and watch your resume take shape. Your information stays in this browser.</p>
+
+      <form id="resumeForm" autocomplete="on">
+        <details class="form-card" open>
+          <summary><span class="step-number">01</span><span><strong>Personal information</strong><small>How employers can reach you</small></span><span class="summary-chevron">⌄</span></summary>
+          <div class="form-body personal-grid">
+            <label class="field wide">Full name<input data-personal="name" name="name" placeholder="e.g. Alex Morgan"></label>
+            <label class="field">Professional title<input data-personal="title" name="title" placeholder="e.g. Product Designer"></label>
+            <label class="field">Email<input data-personal="email" name="email" type="email" placeholder="alex@email.com"></label>
+            <label class="field">Phone<input data-personal="phone" name="phone" type="tel" placeholder="+1 555 0100"></label>
+            <label class="field">Location<input data-personal="location" name="location" placeholder="City, Country"></label>
+            <label class="field">Website / LinkedIn<input data-personal="website" name="website" placeholder="linkedin.com/in/alex"></label>
+            <label class="field wide">Professional summary<textarea data-personal="summary" name="summary" rows="3" placeholder="A brief introduction highlighting your strengths and goals."></textarea></label>
+          </div>
+        </details>
+
+        <section class="form-card collection-card" data-collection="experience">
+          <div class="collection-heading"><span class="step-number">02</span><span><strong>Experience</strong><small>Your work history</small></span><button class="add-button" type="button" data-add="experience">＋ Add</button></div>
+          <div class="entry-list" data-entry-list="experience"></div>
+        </section>
+        <section class="form-card collection-card" data-collection="education">
+          <div class="collection-heading"><span class="step-number">03</span><span><strong>Education</strong><small>Degrees and learning</small></span><button class="add-button" type="button" data-add="education">＋ Add</button></div>
+          <div class="entry-list" data-entry-list="education"></div>
+        </section>
+        <section class="form-card collection-card" data-collection="projects">
+          <div class="collection-heading"><span class="step-number">04</span><span><strong>Projects</strong><small>Selected work and impact</small></span><button class="add-button" type="button" data-add="projects">＋ Add</button></div>
+          <div class="entry-list" data-entry-list="projects"></div>
+        </section>
+
+        <details class="form-card" open>
+          <summary><span class="step-number">05</span><span><strong>Skills</strong><small>Separate skills with commas</small></span><span class="summary-chevron">⌄</span></summary>
+          <div class="form-body">
+            <label class="field">Skills<input id="skillsInput" name="skills" placeholder="Strategy, Figma, Research, Prototyping"></label>
+            <p class="field-help">Tip: list your most relevant skills first.</p>
+          </div>
+        </details>
+      </form>
+      <p id="editorStatus" class="editor-status" aria-live="polite">Changes save automatically in this browser.</p>
+    </section>
+
+    <section class="preview-column" aria-labelledby="previewTitle">
+      <div class="preview-heading">
+        <div><p class="eyebrow">LIVE PREVIEW</p><h2 id="previewTitle">Your resume</h2></div>
+        <div class="paper-indicator"><span></span>A4 · <span id="pageEstimate">1</span> page<span id="pagePlural"></span></div>
+      </div>
+      <div class="template-bar" aria-label="Choose a resume template">
+        <span>Template</span>
+        <div class="template-options">
+          <button type="button" class="template-option selected" data-template="minimal"><span class="template-swatch swatch-minimal"></span>Minimal</button>
+          <button type="button" class="template-option" data-template="modern"><span class="template-swatch swatch-modern"></span>Modern</button>
+          <button type="button" class="template-option" data-template="creative"><span class="template-swatch swatch-creative"></span>Creative</button>
+        </div>
+      </div>
+      <div class="reorder-hint"><span aria-hidden="true">⠿</span> Drag the section handles to change their order</div>
+      <div class="paper-viewport">
+        <article id="resumePreview" class="resume-paper template-minimal" aria-label="Live resume preview" data-template="minimal">
+          <header class="resume-header" data-resume-header></header>
+          <div class="resume-content" data-resume-sections></div>
+        </article>
+      </div>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

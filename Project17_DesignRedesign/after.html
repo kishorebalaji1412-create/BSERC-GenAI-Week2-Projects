@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TECHNOVA 2026 | College Technical Symposium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f2f4ef;
+      --muted: #9daaa5;
+      --base: #090e12;
+      --panel: rgba(18, 27, 33, .78);
+      --line: rgba(191, 224, 207, .13);
+      --lime: #c5ff5a;
+      --cyan: #66e4d1;
+      --mono: "DM Mono", monospace;
+      --sans: "Outfit", "Inter", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 85px; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 82% 4%, rgba(32, 108, 94, .22), transparent 34rem),
+        radial-gradient(ellipse at 8% 38%, rgba(76, 104, 49, .12), transparent 30rem),
+        var(--base);
+      color: var(--ink);
+      font: 16px/1.6 var(--sans);
+    }
+    a { color: inherit; }
+    header {
+      position: sticky;
+      z-index: 5;
+      top: 0;
+      border-bottom: 1px solid var(--line);
+      background: rgba(9, 14, 18, .78);
+      backdrop-filter: blur(18px);
+    }
+    header > div {
+      width: min(1120px, calc(100% - 40px));
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin: auto;
+    }
+    header > div > a {
+      color: var(--lime);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    nav { display: flex; flex-wrap: wrap; gap: 8px 26px; }
+    nav a {
+      color: #bdc9c4;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+    nav a:hover, nav a:focus-visible { color: var(--lime); }
+    main { overflow: hidden; }
+    section { width: min(1120px, calc(100% - 40px)); margin: auto; }
+    #home {
+      min-height: 570px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(240px, .65fr);
+      align-items: center;
+      gap: 48px;
+      padding-top: 74px;
+      padding-bottom: 74px;
+    }
+    #home > div:first-child > p:first-child,
+    #highlights > div:first-child > p:first-child,
+    #schedule > div:first-child > p:first-child,
+    #cafe > div:first-child > p:first-child,
+    #register > div:first-child > p:first-child {
+      color: var(--lime);
+      font: 11px/1.5 var(--mono);
+      letter-spacing: .12em;
+    }
+    #home h1 {
+      max-width: 760px;
+      margin: 15px 0 8px;
+      font-size: clamp(58px, 10vw, 112px);
+      font-weight: 800;
+      letter-spacing: -.075em;
+      line-height: .9;
+    }
+    #home > div:first-child > p:nth-of-type(2) {
+      margin: 20px 0;
+      color: #d3ddd7;
+      font-size: clamp(19px, 2.8vw, 27px);
+      letter-spacing: -.025em;
+    }
+    #home > div:first-child > p:nth-of-type(3) { color: var(--muted); font-size: 14px; }
+    #home strong { color: var(--ink); }
+    #home > div:first-child > a {
+      display: inline-flex;
+      margin-top: 22px;
+      padding: 12px 19px;
+      border: 1px solid var(--lime);
+      border-radius: 7px;
+      background: var(--lime);
+      color: #172010;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    #home > div:first-child > a:hover { transform: translateY(-2px); box-shadow: 0 10px 32px #c5ff5a2c; }
+    #home > div:nth-child(2) {
+      position: relative;
+      padding: 30px;
+      overflow: hidden;
+      border: 1px solid rgba(102, 228, 209, .22);
+      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(102, 228, 209, .1), rgba(18, 27, 33, .8) 60%);
+      box-shadow: 0 22px 70px #0005, inset 0 1px #ffffff0b;
+      backdrop-filter: blur(16px);
+    }
+    #home > div:nth-child(2)::after {
+      position: absolute;
+      right: -32px;
+      bottom: -64px;
+      width: 180px;
+      height: 180px;
+      border: 1px solid #66e4d133;
+      border-radius: 50%;
+      box-shadow: 0 0 0 18px #66e4d10a, 0 0 0 38px #66e4d108;
+      content: "";
+      pointer-events: none;
+    }
+    #home > div:nth-child(2) p:first-child { color: var(--cyan); font: 11px var(--mono); letter-spacing: .12em; }
+    #home > div:nth-child(2) p:nth-child(2) { max-width: 260px; color: #d7e2dc; font-size: 22px; line-height: 1.3; }
+    #home > div:nth-child(2) p:last-child { padding-top: 14px; border-top: 1px solid var(--line); color: var(--lime); font: 12px var(--mono); }
+    #highlights, #schedule, #cafe, #register { padding-top: 76px; padding-bottom: 76px; }
+    #highlights, #cafe {
+      width: 100%;
+      padding-right: max(20px, calc((100% - 1120px) / 2));
+      padding-left: max(20px, calc((100% - 1120px) / 2));
+      background: rgba(255,255,255,.018);
+      border-top: 1px solid #ffffff08;
+      border-bottom: 1px solid #ffffff08;
+    }
+    #highlights > div:first-child, #schedule > div:first-child, #cafe > div:first-child, #register > div:first-child { max-width: 650px; margin-bottom: 30px; }
+    section h2 { margin: 7px 0 10px; font-size: clamp(32px, 5vw, 48px); font-weight: 600; letter-spacing: -.055em; line-height: 1.08; }
+    #highlights > div:first-child > p:last-child, #schedule > div:first-child > p:last-child,
+    #cafe > div:first-child > p:last-child, #register > div:first-child > p:last-child { color: var(--muted); }
+    #highlights > div:nth-child(2), #cafe > div:nth-child(2) { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    article {
+      padding: 23px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+      box-shadow: 0 14px 40px #0002, inset 0 1px #ffffff08;
+      backdrop-filter: blur(12px);
+      transition: transform .22s ease, border-color .22s ease, background .22s ease;
+    }
+    article:hover { transform: translateY(-5px); border-color: #c5ff5a55; background: linear-gradient(145deg, #c5ff5a0e, #ffffff04); }
+    article > p:first-child { color: var(--cyan); font: 10px var(--mono); letter-spacing: .1em; }
+    article h3 { margin: 24px 0 8px; font-size: 21px; font-weight: 600; letter-spacing: -.035em; }
+    article p:not(:first-child) { color: var(--muted); font-size: 14px; }
+    #schedule table { width: 100%; border-collapse: collapse; text-align: left; }
+    #schedule th { color: var(--cyan); font: 10px var(--mono); letter-spacing: .1em; }
+    #schedule th, #schedule td { padding: 17px 15px; border-bottom: 1px solid var(--line); }
+    #schedule td:first-child { color: var(--lime); font: 12px var(--mono); white-space: nowrap; }
+    #schedule td:nth-child(2) { font-weight: 500; }
+    #schedule td:last-child { color: var(--muted); }
+    #cafe article h3 { margin-top: 17px; }
+    #cafe article p:last-child { color: var(--lime); font: 12px var(--mono); }
+    #register { display: grid; grid-template-columns: .9fr 1.1fr; align-items: start; gap: 54px; }
+    #register form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 14px;
+      padding: 25px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: linear-gradient(145deg, #ffffff0a, #ffffff03);
+      box-shadow: 0 18px 55px #0003, inset 0 1px #ffffff08;
+      backdrop-filter: blur(14px);
+    }
+    #register form label { align-self: end; color: #d4dfd8; font-size: 13px; font-weight: 500; }
+    #register form input, #register form select {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #ffffff1b;
+      border-radius: 6px;
+      outline: none;
+      background: #0b1115;
+      color: var(--ink);
+      font: 14px var(--sans);
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+    #register form input:focus, #register form select:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px #66e4d11d; }
+    #register form input::placeholder { color: #6f7d76; }
+    #register form label[for="full-name"], #register form label[for="email"],
+    #register form label[for="college"], #register form label[for="event"],
+    #register form button, #register form > p { grid-column: 1 / -1; }
+    #register form button {
+      min-height: 46px;
+      margin-top: 8px;
+      border: 0;
+      border-radius: 6px;
+      background: var(--lime);
+      color: #19220f;
+      font: 700 14px var(--sans);
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    #register form button:hover { transform: translateY(-2px); background: #d4ff83; box-shadow: 0 9px 24px #c5ff5a27; }
+    #register form > p { margin: 2px 0 0; color: #85938b; font-size: 11px; }
+    footer {
+      display: flex;
+      width: min(1120px, calc(100% - 40px));
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin: auto;
+      padding: 22px 0 30px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    footer p:first-child { color: var(--lime); font-weight: 700; letter-spacing: .07em; }
+    footer a { color: #c8d3cd; text-decoration: none; }
+    footer a:hover { color: var(--lime); }
+    @media (max-width: 760px) {
+      header > div { width: min(100% - 32px, 600px); min-height: 64px; align-items: flex-start; flex-direction: column; justify-content: center; gap: 4px; padding: 10px 0; }
+      nav { gap: 4px 17px; }
+      nav a { font-size: 12px; }
+      section { width: min(100% - 32px, 600px); }
+      #home { min-height: auto; grid-template-columns: 1fr; gap: 35px; padding-top: 75px; padding-bottom: 65px; }
+      #home > div:nth-child(2) { max-width: 430px; }
+      #highlights, #cafe { padding-right: max(16px, calc((100% - 600px) / 2)); padding-left: max(16px, calc((100% - 600px) / 2)); }
+      #highlights, #schedule, #cafe, #register { padding-top: 58px; padding-bottom: 58px; }
+      #highlights > div:nth-child(2), #cafe > div:nth-child(2) { grid-template-columns: 1fr; }
+      #register { grid-template-columns: 1fr; gap: 15px; }
+      footer { width: calc(100% - 32px); flex-wrap: wrap; }
+    }
+    @media (max-width: 480px) {
+      #home h1 { font-size: clamp(53px, 16vw, 76px); }
+      #schedule { overflow-x: auto; }
+      #schedule table { min-width: 510px; }
+      #schedule th, #schedule td { padding: 13px 10px; }
+      #register form { grid-template-columns: 1fr; padding: 19px; }
+      #register form label, #register form input, #register form select { grid-column: 1 / -1; }
+      footer { align-items: flex-start; flex-direction: column; gap: 5px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <a href="#home">TECHNOVA 2026</a>
+      <nav aria-label="Main navigation">
+        <a href="#highlights">Highlights</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#cafe">Cafe</a>
+        <a href="#register">Register</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section id="home">
+      <div>
+        <p>RIVERVIEW COLLEGE OF ENGINEERING PRESENTS</p>
+        <h1>TECHNOVA 2026</h1>
+        <p>Ideas in motion. Innovation without limits.</p>
+        <p><strong>October 24, 2026</strong> <span> | </span> <span>Riverview College of Engineering</span></p>
+        <a href="#schedule">Explore the schedule</a>
+      </div>
+      <div>
+        <p>ONE DAY. BIG IDEAS.</p>
+        <p>Connect with creators, test your skills, and make something remarkable.</p>
+        <p>09:00 AM — 05:00 PM</p>
+      </div>
+    </section>
+    <section id="highlights">
+      <div>
+        <p>WHAT'S HAPPENING</p>
+        <h2>Make room for the extraordinary.</h2>
+        <p>Learn something new, meet your people, and put your ideas to the test.</p>
+      </div>
+      <div>
+        <article>
+          <p>01 / BUILD</p>
+          <h3>Innovation Challenge</h3>
+          <p>Turn a bold idea into a working prototype with your team.</p>
+        </article>
+        <article>
+          <p>02 / EXPLORE</p>
+          <h3>Tech Talks</h3>
+          <p>Hear fresh perspectives from people shaping tomorrow's technology.</p>
+        </article>
+        <article>
+          <p>03 / COMPETE</p>
+          <h3>Robo Rally</h3>
+          <p>Put your robot through its paces in a fast, friendly showdown.</p>
+        </article>
+      </div>
+    </section>
+    <section id="schedule">
+      <div>
+        <p>PLAN YOUR DAY</p>
+        <h2>The schedule</h2>
+        <p>A full day of ideas, experiments, and friendly competition.</p>
+      </div>
+      <table>
+        <thead>
+          <tr><th>TIME</th><th>SESSION</th><th>LOCATION</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>09:00 AM</td><td>Opening Ceremony</td><td>Innovation Hall</td></tr>
+          <tr><td>10:00 AM</td><td>Tech Talks</td><td>Auditorium A</td></tr>
+          <tr><td>12:00 PM</td><td>Innovation Challenge</td><td>Design Lab</td></tr>
+          <tr><td>02:00 PM</td><td>Robo Rally</td><td>East Courtyard</td></tr>
+          <tr><td>04:30 PM</td><td>Awards &amp; Closing</td><td>Innovation Hall</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section id="cafe">
+      <div>
+        <p>GOOD FOOD. GOOD IDEAS.</p>
+        <h2>The campus cafe</h2>
+        <p>Take a break, refuel, and get back to making things happen.</p>
+      </div>
+      <div>
+        <article>
+          <p>BREW LAB</p>
+          <h3>Freshly brewed coffee</h3>
+          <p>Espresso, iced coffee, and masala chai</p>
+          <p>From ₹80</p>
+        </article>
+        <article>
+          <p>BYTE BITES</p>
+          <h3>Quick bites</h3>
+          <p>Grilled sandwiches, wraps, and crispy fries</p>
+          <p>From ₹120</p>
+        </article>
+        <article>
+          <p>GREEN PIXEL</p>
+          <h3>Fresh &amp; wholesome</h3>
+          <p>Seasonal bowls, fruit cups, and fresh lemonade</p>
+          <p>From ₹100</p>
+        </article>
+      </div>
+    </section>
+    <section id="register">
+      <div>
+        <p>YOUR NEXT BIG IDEA STARTS HERE</p>
+        <h2>Save your seat.</h2>
+        <p>Registration is free for all college students. Sign up and join us on campus.</p>
+      </div>
+      <form action="#" method="get">
+        <label for="full-name">Full name</label>
+        <input id="full-name" name="name" type="text" placeholder="e.g. Alex Morgan" required>
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" placeholder="you@college.edu" required>
+        <label for="college">College or university</label>
+        <input id="college" name="college" type="text" placeholder="Your institution" required>
+        <label for="event">Choose your event</label>
+        <select id="event" name="event" required>
+          <option value="">Select an event</option>
+          <option value="innovation-challenge">Innovation Challenge</option>
+          <option value="tech-talks">Tech Talks</option>
+          <option value="robo-rally">Robo Rally</option>
+        </select>
+        <button type="submit">Complete registration</button>
+        <p>By registering, you agree to receive event updates from TECHNOVA 2026.</p>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <p>TECHNOVA 2026</p>
+    <p>Riverview College of Engineering · October 24, 2026</p>
+    <a href="#home">Back to top ↑</a>
+  </footer>
+</body>
+</html>

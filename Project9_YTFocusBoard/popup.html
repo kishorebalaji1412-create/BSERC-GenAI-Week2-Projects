@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Focus Board</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="popup.js"></script>
+</head>
+<body>
+  <main class="popup">
+    <header class="top">
+      <div class="brand"><span class="brand-icon">◎</span><span><strong>Focus Board</strong><small>YouTube, with intention</small></span></div>
+      <span class="local-pill"><i></i> PRIVATE</span>
+    </header>
+    <section class="watch-card">
+      <div class="watch-top"><div><p class="eyebrow">YOUR DAY, IN PERSPECTIVE</p><h1>Watch time today</h1></div><span class="clock-icon">◷</span></div>
+      <div class="watch-number"><strong id="watchTime">0m</strong><span>watching YouTube</span></div>
+      <div class="watch-track"><span id="watchBar"></span></div>
+      <div class="watch-foot"><span>Today · local time</span><span id="watchSeconds">0 min</span></div>
+    </section>
+    <section id="goalSection" class="goal-card">
+      <div class="section-top"><span class="section-icon goal-icon">✦</span><div><h2>Why are you here?</h2><p>Choose an intention. Your focus window lasts 60 minutes.</p></div></div>
+      <form id="goalForm">
+        <label class="sr-only" for="goalInput">What do you want to do on YouTube?</label>
+        <input id="goalInput" maxlength="160" placeholder="e.g. Watch the tutorial for class" autocomplete="off" required>
+        <button id="goalButton" type="submit">Unlock for 60 min <span>→</span></button>
+      </form>
+      <div id="activeGoal" class="active-goal hidden">
+        <span class="goal-status"><i></i><span id="goalStatusText">Focus window open</span></span>
+        <strong id="goalText"></strong>
+        <div class="goal-actions"><span id="goalRemaining"></span><button id="endFocusButton" type="button">End focus</button></div>
+      </div>
+      <p id="goalMessage" class="message" aria-live="polite"></p>
+    </section>
+    <section class="notes-card">
+      <div class="section-top"><span class="section-icon notes-icon">✎</span><div><h2>Video notes</h2><p id="videoContext">Open a YouTube video to add timestamped notes.</p></div></div>
+      <form id="noteForm">
+        <div class="note-input-row"><input id="noteInput" maxlength="500" placeholder="Jot down a thought…" autocomplete="off" required><button id="addNoteButton" type="submit" aria-label="Add note" title="Add note">＋</button></div>
+      </form>
+      <div id="notesList" class="notes-list"></div>
+      <p id="notesEmpty" class="notes-empty">Notes are saved for this video and jump back to their timestamp.</p>
+    </section>
+    <footer><span>Settings &amp; hide toggles live on YouTube.</span><span>Stored on this device</span></footer>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </main>
+</body>
+</html>

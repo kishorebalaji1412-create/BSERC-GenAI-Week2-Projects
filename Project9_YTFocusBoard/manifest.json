@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Focus Board",
+  "version": "1.0.0",
+  "description": "Set a viewing intention, hide distractions, and keep timestamped notes on YouTube.",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["https://www.youtube.com/*"],
+  "action": {
+    "default_title": "YouTube Focus Board",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

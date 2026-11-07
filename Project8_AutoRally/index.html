@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#172b27">
+  <title>Auto Rally — Rickshaw Roadtrip</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="game.js"></script>
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Auto Rally"><span class="brand-mark">A</span><span>auto<span class="brand-light">rally</span></span></a>
+      <div class="top-actions">
+        <div class="best-chip"><span>★</span><span>BEST <b id="highScore">000000</b></span></div>
+        <button id="muteButton" class="icon-button" type="button" aria-label="Mute sounds" title="Mute sounds"><span id="muteIcon">♫</span></button>
+      </div>
+    </header>
+
+    <section class="game-layout">
+      <div class="game-column">
+        <div class="game-heading">
+          <div><p class="eyebrow">INDIA'S MOST ADVENTUROUS RICKSHAW</p><h1>Auto Rally <span>✦</span></h1></div>
+          <div class="track-tag"><i></i> MANGO GROVE CIRCUIT</div>
+        </div>
+        <div class="hud">
+          <div class="hud-stat"><span class="hud-icon">◷</span><div><small>TIME</small><strong id="timer">00:00.0</strong></div></div>
+          <div class="hud-stat lap-stat"><span class="hud-icon">↻</span><div><small>LAP</small><strong id="lapCounter">1 <i>/ 3</i></strong></div><div class="lap-dots"><i class="current"></i><i></i><i></i></div></div>
+          <div class="hud-stat"><span class="hud-icon coin-icon">●</span><div><small>SCORE</small><strong id="score">000000</strong></div></div>
+          <div class="hud-stat speed-stat"><span class="hud-icon">➤</span><div><small>SPEED</small><strong><span id="speed">0</span><i> km/h</i></strong></div></div>
+        </div>
+        <div class="canvas-frame">
+          <canvas id="gameCanvas" aria-label="Auto Rally top-down racing game"></canvas>
+          <div id="startOverlay" class="overlay">
+            <div class="overlay-card">
+              <span class="overlay-sun">☀</span>
+              <p class="eyebrow">READY, RICKSHAW?</p>
+              <h2>Three laps.<br><em>One little legend.</em></h2>
+              <p>Race the mango grove, scoop up coins, and save a little nitro for the straightaways.</p>
+              <button id="startButton" class="start-button" type="button">Start your engine <span>→</span></button>
+              <small>ARROWS / WASD TO DRIVE · SPACE TO BOOST</small>
+            </div>
+          </div>
+          <div id="finishOverlay" class="overlay hidden">
+            <div class="overlay-card finish-card">
+              <span class="overlay-sun">🏁</span>
+              <p class="eyebrow">RALLY COMPLETE</p>
+              <h2 id="finishTitle">What a ride!</h2>
+              <div class="finish-stats"><span>TIME <b id="finalTime">00:00.0</b></span><span>SCORE <b id="finalScore">000000</b></span></div>
+              <p id="recordText" class="record-text"></p>
+              <button id="replayButton" class="start-button" type="button">Race again <span>↻</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="control-row">
+          <div class="drive-controls" aria-label="Driving controls">
+            <button class="control-btn steer-btn" data-control="left" aria-label="Steer left"><span>←</span><small>LEFT</small></button>
+            <button class="control-btn steer-btn" data-control="right" aria-label="Steer right"><span>→</span><small>RIGHT</small></button>
+          </div>
+          <div class="action-controls">
+            <button class="control-btn brake-btn" data-control="brake" aria-label="Brake"><span>▰</span><small>BRAKE</small></button>
+            <button class="control-btn boost-btn" data-control="boost" aria-label="Boost"><span>⚡</span><small>BOOST</small><i id="nitroMeter"><b></b></i></button>
+            <button class="control-btn gas-btn" data-control="gas" aria-label="Accelerate"><span>▲</span><small>GO</small></button>
+          </div>
+        </div>
+      </div>
+      <aside class="side-column">
+        <section class="side-card race-card">
+          <div class="side-heading"><span class="side-icon green">✦</span><div><h2>Race day</h2><small>Today's little adventure</small></div></div>
+          <div class="race-progress"><div class="progress-label"><span>TRACK PROGRESS</span><b id="progressLabel">0%</b></div><div class="progress-track"><span id="progressBar"></span></div><div class="progress-note">Three laps around the grove</div></div>
+          <div class="race-record"><span>Best lap</span><strong id="bestLap">--:--.-</strong></div>
+          <div class="race-record"><span>Coins collected</span><strong><span class="coin-mini">●</span> <b id="coinCount">0</b></strong></div>
+        </section>
+        <section class="side-card tips-card">
+          <div class="side-heading"><span class="side-icon amber">✧</span><div><h2>Roadside tips</h2><small>A local's guide to the grove</small></div></div>
+          <div class="tip"><span class="tip-badge coin-badge">●</span><div><strong>Pick up coins</strong><small>Each one adds 100 points.</small></div><kbd>●</kbd></div>
+          <div class="tip"><span class="tip-badge hazard-badge">!</span><div><strong>Watch for crates</strong><small>Bonk! Crates slow you down.</small></div><kbd>!</kbd></div>
+          <div class="tip"><span class="tip-badge nitro-badge">⚡</span><div><strong>Grab the nitro</strong><small>Top up for a turbo boost.</small></div><kbd>⚡</kbd></div>
+        </section>
+        <section class="side-card controls-card">
+          <div class="side-heading"><span class="side-icon blue">⌨</span><div><h2>Keyboard controls</h2><small>Or tap the buttons below</small></div></div>
+          <div class="key-row"><span>Steer</span><div><kbd>←</kbd><kbd>→</kbd><span>or</span><kbd>A</kbd><kbd>D</kbd></div></div>
+          <div class="key-row"><span>Accelerate</span><div><kbd>↑</kbd><span>or</span><kbd>W</kbd></div></div>
+          <div class="key-row"><span>Brake</span><div><kbd>↓</kbd><span>or</span><kbd>S</kbd></div></div>
+          <div class="key-row"><span>Nitro boost</span><div><kbd>SPACE</kbd></div></div>
+        </section>
+        <p class="local-note"><span>◉</span> Your high score and lap record stay right here on this device.</p>
+      </aside>
+    </section>
+    <footer class="footer"><span>MADE FOR SUNNY DAYS &amp; OPEN ROADS</span><span>AUTO RALLY <i>✦</i> EST. TODAY</span></footer>
+  </main>
+</body>
+</html>

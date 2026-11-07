@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6f2">
+  <meta name="description" content="A private, offline-first billing app for independent shops.">
+  <title>BillBook — Shop billing, made simple</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232d7458'/%3E%3Cpath d='M18 15h20l10 10v24H18z' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M37 15v12h11M25 35h16M25 42h12' fill='none' stroke='white' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="qrcode.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="BillBook home"><span class="brand-icon">B</span><span>billbook</span><span class="brand-tag">LOCAL</span></a>
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="navigation" aria-label="Main navigation">
+        <button class="nav-link active" data-view="billing"><span class="nav-icon">▤</span>New bill</button>
+        <button class="nav-link" data-view="history"><span class="nav-icon">◷</span>Sales history</button>
+        <button class="nav-link" data-view="items"><span class="nav-icon">▦</span>Items & prices</button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="offline-card"><span class="offline-icon">⌁</span><div><strong>Works offline</strong><small>Data stays on this device</small></div></div>
+        <button id="backupButton" class="backup-button"><span>⇩</span> Backup shop data</button>
+        <button id="restoreButton" class="backup-button"><span>⇧</span> Restore backup</button>
+        <input id="restoreInput" type="file" accept=".json,application/json" hidden>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="page-crumb"><span>Workspace</span><i>/</i><strong id="pageName">New bill</strong></div>
+        <div class="topbar-right">
+          <span class="sync-status"><i></i><span id="saveStatus">Saved locally</span></span>
+          <button id="shopSettingsButton" class="shop-button" aria-label="Edit shop profile"><span id="shopAvatar">S</span><span id="shopButtonName">My Shop</span><b>⌄</b></button>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="view active" id="view-billing">
+          <div class="view-heading">
+            <div><p class="eyebrow">COUNTER</p><h1>Create a bill</h1><p class="subheading">Add products, review the total, and share a receipt.</p></div>
+            <span class="bill-date" id="todayDate"></span>
+          </div>
+          <div class="billing-layout">
+            <section class="panel bill-builder">
+              <div class="panel-top"><div><h2>Items</h2><p>Choose from your saved list or add a custom item.</p></div><button id="addLineButton" class="button button-outline"><span>＋</span> Add item</button></div>
+              <div class="quick-items-wrap"><p class="section-caption">QUICK ADD</p><div id="quickItems" class="quick-items"></div></div>
+              <div class="table-wrap">
+                <table class="bill-table">
+                  <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th class="amount-col">Amount</th><th><span class="sr-only">Remove</span></th></tr></thead>
+                  <tbody id="billLines"></tbody>
+                </table>
+                <div id="emptyBill" class="empty-lines"><span>＋</span><strong>Start your bill</strong><small>Pick a quick item or add a custom one.</small></div>
+              </div>
+              <div class="bill-options">
+                <label class="compact-field">Discount <span class="input-suffix"><input id="discountInput" type="number" min="0" step="0.01" value="0" inputmode="decimal"><i>₹</i></span></label>
+                <label class="compact-field">Tax rate <span class="input-suffix"><input id="taxInput" type="number" min="0" max="100" step="0.01" value="0" inputmode="decimal"><i>%</i></span></label>
+              </div>
+              <div class="totals">
+                <div><span>Subtotal</span><strong id="subtotal">₹0.00</strong></div>
+                <div><span>Discount</span><strong id="discountValue">− ₹0.00</strong></div>
+                <div><span>Tax <small id="taxLabel">(0%)</small></span><strong id="taxValue">₹0.00</strong></div>
+                <div class="grand-total"><span>Total due</span><strong id="grandTotal">₹0.00</strong></div>
+              </div>
+              <button id="completeSaleButton" class="button button-primary complete-button" disabled><span>✓</span> Complete sale</button>
+            </section>
+
+            <aside class="right-column">
+              <section class="panel payment-panel">
+                <div class="panel-top"><div><h2>UPI payment</h2><p>Scan to pay the exact bill amount.</p></div><span class="upi-mark">UPI</span></div>
+                <div class="qr-wrap"><div id="qrCode" class="qr-code"><span class="qr-placeholder">QR</span></div></div>
+                <div id="qrHint" class="qr-hint">Add your UPI ID in shop profile to enable payments.</div>
+                <div class="payee-row"><span>Pay to</span><strong id="payeeName">My Shop</strong></div>
+                <div class="payee-row"><span>Amount</span><strong id="qrAmount">₹0.00</strong></div>
+                <button id="copyUpiButton" class="button button-outline copy-upi" disabled>Copy UPI payment link</button>
+              </section>
+              <section class="receipt-tools">
+                <div><span class="receipt-icon">▧</span><div><strong>Receipt ready to share</strong><small>Save as an image or send it to a customer.</small></div></div>
+                <button id="shareReceiptButton" class="button button-outline" disabled><span>↗</span> Share receipt</button>
+                <button id="downloadReceiptButton" class="button button-quiet" disabled>Download receipt image</button>
+              </section>
+              <p class="privacy-note"><span>◉</span> Billing data is stored locally on this device.</p>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-history">
+          <div class="view-heading">
+            <div><p class="eyebrow">YOUR BUSINESS AT A GLANCE</p><h1>Sales history</h1><p class="subheading">A daily snapshot of your completed bills.</p></div>
+            <button id="historyBackupButton" class="button button-outline">⇩ Export backup</button>
+          </div>
+          <div class="stats-grid">
+            <article class="stat-card"><span class="stat-icon green">₹</span><div><small>Sales today</small><strong id="salesToday">₹0.00</strong><em id="salesTodayDate"></em></div></article>
+            <article class="stat-card"><span class="stat-icon blue">▤</span><div><small>Bills today</small><strong id="billsToday">0</strong><em>Completed transactions</em></div></article>
+            <article class="stat-card"><span class="stat-icon amber">◷</span><div><small>All-time sales</small><strong id="allSales">₹0.00</strong><em id="allBills">0 bills saved</em></div></article>
+          </div>
+          <section class="panel history-panel">
+            <div class="panel-top"><div><h2>Recent bills</h2><p>Your sales saved on this device.</p></div><button id="clearHistoryButton" class="text-button">Clear history</button></div>
+            <div class="table-wrap">
+              <table class="history-table"><thead><tr><th>Invoice</th><th>Customer / items</th><th>Date & time</th><th class="amount-col">Amount</th><th></th></tr></thead><tbody id="historyRows"></tbody></table>
+            </div>
+            <div id="emptyHistory" class="empty-history"><span>◷</span><strong>No bills yet</strong><small>Completed sales will show up here.</small></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-items">
+          <div class="view-heading">
+            <div><p class="eyebrow">YOUR CATALOG</p><h1>Items & prices</h1><p class="subheading">Save common products for faster billing at the counter.</p></div>
+          </div>
+          <div class="catalog-layout">
+            <section class="panel catalog-panel"><div class="panel-top"><div><h2>Saved items</h2><p>Tap an item while billing to add it to the invoice.</p></div><span id="catalogCount" class="count-pill">0 items</span></div><div id="catalogList" class="catalog-list"></div><div id="emptyCatalog" class="empty-history"><span>▦</span><strong>Your catalog is empty</strong><small>Add your most-sold items to get started.</small></div></section>
+            <section class="panel add-item-panel"><div class="panel-top"><div><h2>Add an item</h2><p>Create a reusable quick-add product.</p></div></div>
+              <form id="itemForm" class="stack-form">
+                <label class="form-field">Item name<input id="itemName" required maxlength="70" placeholder="e.g. Cotton tote bag"></label>
+                <label class="form-field">Selling price <span class="rupee-input"><i>₹</i><input id="itemPrice" required type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00"></span></label>
+                <button class="button button-primary" type="submit">＋ Save item</button>
+              </form>
+            </section>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="shopDialog" class="modal">
+    <form method="dialog" id="shopForm">
+      <div class="modal-heading"><div><p class="eyebrow">SHOP PROFILE</p><h2>Your business details</h2><p>Shown on receipts and UPI payment requests.</p></div><button class="modal-close" value="cancel" aria-label="Close">×</button></div>
+      <label class="form-field">Shop name<input id="shopNameInput" required maxlength="80" placeholder="My Shop"></label>
+      <label class="form-field">UPI ID <input id="upiIdInput" required maxlength="100" placeholder="shopname@bank"></label>
+      <label class="form-field">Phone (optional)<input id="shopPhoneInput" type="tel" maxlength="30" placeholder="+91 98765 43210"></label>
+      <p class="modal-note">UPI payment URLs are generated on this device. Check your UPI ID before sharing payment QR codes.</p>
+      <div class="modal-actions"><button class="button button-quiet" value="cancel">Cancel</button><button id="saveShopButton" class="button button-primary" value="save">Save profile</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

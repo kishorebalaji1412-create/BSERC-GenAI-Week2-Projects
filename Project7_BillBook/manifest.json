@@ -1,0 +1,13 @@
+{
+  "name": "BillBook — Shop Billing",
+  "short_name": "BillBook",
+  "description": "Private, offline-first billing for independent shops.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f6f2",
+  "theme_color": "#1d2925",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
